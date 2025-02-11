@@ -65,10 +65,15 @@ function drawNumbers() {
         number.style.left = `${posX - 15}px`;
         number.style.top = `${posY - 15}px`;
         number.textContent = numObj.number;
-        
+
+        // Добавим дополнительный поворот для числа, чтобы оно смотрело внутрь
+        const rotationAngle = angle ;  // Сдвиг на 90 градусов для ориентации в центр
+        number.style.transform = `rotate(${rotationAngle}deg)`;
+
         numberContainer.appendChild(number);
     });
 }
+
 
 function spinWheel() {
     if (isSpinning) return;

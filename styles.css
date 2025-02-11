@@ -90,7 +90,9 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 1;
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(-170px) rotate(-90deg); /* Added translateY to position and rotate for inward facing */
 }
+
 .pointer {
     position: absolute;
     top: -30px;
