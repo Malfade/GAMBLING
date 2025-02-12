@@ -9,10 +9,12 @@ body {
     color: white;
     font-family: 'Arial', sans-serif;
 }
+
 .wheel-container {
     position: relative;
     margin: 40px 0;
 }
+
 .wheel {
     width: 400px;
     height: 400px;
@@ -20,7 +22,6 @@ body {
     border: 15px solid #ffd700;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 50px rgba(0, 0, 0, 0.5);
     position: relative;
-    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
     transform-origin: center;
     background: conic-gradient(
         #00b300 0deg 9.73deg,
@@ -61,20 +62,30 @@ body {
         #cc0000 340.55deg 350.28deg,
         #000000 330.82deg 340.55deg
     );
+    /* Добавляем сглаживание для более плавного вращения */
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
 }
-.center-circle {
+
+/* Обновляем анимацию для более плавной остановки */
+.wheel {
+    transition: none; /* Убираем базовый transition */
+}
+
+
+.wheel::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background: #ffd700;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-radius: 50%;
-    border: 5px solid #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 2;
+    background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
 }
+
 .number {
     position: absolute;
     color: white;
@@ -90,7 +101,51 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 1;
-    transform: rotate(calc(var(--angle) * 1deg)) translateY(-170px) rotate(-90deg); /* Added translateY to position and rotate for inward facing */
+    /* Модифицируем трансформацию для правильной ориентации чисел */
+    transform: rotate(var(--angle)) translateY(-170px) rotate(calc(-1 * var(--angle)));
+    backface-visibility: hidden;
+    /* Добавляем сглаживание для чисел */
+    transition: opacity 0.3s ease;
+}
+
+/* Остальные стили остаются без изменений ... */
+
+@keyframes wheelSpin {
+    0% {
+        transform: rotate(0);
+    }
+    20% {
+        transform: rotate(720deg); /* Быстрое начальное вращение */
+    }
+    70% {
+        transform: rotate(2880deg); /* Замедление */
+    }
+    100% {
+        transform: rotate(var(--final-rotation)); /* Финальная позиция */
+    }
+}
+
+/* Добавляем эффект свечения при вращении */
+@keyframes spin-glow {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.wheel.spinning {
+    animation: wheelSpin 8s cubic-bezier(0.32, 0, 0.19, 1) forwards,
+               spin-glow 1s infinite;
+}
+/* Добавляем плавное затухание для чисел при вращении */
+.wheel.spinning .number {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
 }
 
 .pointer {
@@ -285,9 +340,13 @@ body {
 }
 
 /* Prevent text selection on interactive elements */
-.wheel, .spin-button, .bet-select, .input-field {
+ .spin-button, .bet-select, .input-field {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+}
+.wheel {
+    transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
 /* Add touch-friendly tap targets */
@@ -295,3 +354,14 @@ body {
     min-height: 44px;
 }
 
+.bet-type {
+    margin-bottom: 20px;
+}
+
+.bet-type label {
+    margin-right: 15px;
+}
+
+#numberBet, #colorBet {
+    margin-bottom: 20px;
+}
