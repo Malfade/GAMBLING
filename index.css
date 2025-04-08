@@ -517,6 +517,45 @@ nav {
     color: var(--accent);
 }
 
+/* Примеры проектов */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.project-card {
+    background-color: var(--primary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    transition: var(--transition);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    text-align: center;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+}
+
+.project-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.project-card h3 i {
+    font-size: 1.5rem;
+}
+
+.project-card p {
+    color: var(--light-dark);
+    font-size: 0.95rem;
+}
+
 /* CTA секция */
 .cta-section {
     background: linear-gradient(135deg, var(--highlight), var(--primary));
